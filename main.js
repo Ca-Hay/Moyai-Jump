@@ -64,8 +64,8 @@ class player {
     constructor(x, y, z, w, h, l) {
       this.geometry = new THREE.BoxGeometry(w, h, l),
       this.playerTexture = [
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiLeft.png')}),         //Left   pz
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiRight.png')}),        //Right  nz
+        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiRight.png')}),         //Left   pz
+        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiLeft.png')}),        //Right  nz
         new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Top    py
         new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Bottom ny
         new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiFront.png')}),        //Front  px
@@ -97,6 +97,8 @@ let wDown = false;
 let sDown = false;
 let aDown = false;
 let dDown = false;
+let qDown = false;
+let eDown = false;
 let spaceDown = false;
 let speed = 0.2;
 
@@ -108,6 +110,52 @@ function movementZpos(){
   if(dDown === true) {
       player1.mesh.position.x += 1* speed;
   };
+}
+
+function movementZneg(){
+  if(aDown === true) {
+      player1.mesh.position.x += 1* speed;
+  };
+  if(dDown === true) {
+      player1.mesh.position.x -= 1* speed;
+  };
+}
+
+function movementXpos(){
+  if(aDown === true) {
+      player1.mesh.position.z += 1* speed;
+  };
+  if(dDown === true) {
+      player1.mesh.position.z -= 1* speed;
+  };
+}
+
+function movementXneg(){
+  if(aDown === true) {
+      player1.mesh.position.z -= 1* speed;
+  };
+  if(dDown === true) {
+      player1.mesh.position.z += 1* speed;
+  };
+}
+
+const cameraState = [1, 2, 3, 4];
+let cameraCounter = 0;
+
+function cCountController(){
+if (cameraCounter === 4){
+  cameraCounter = 0;
+}
+if (cameraCounter === -1){
+  cameraCounter = 3;
+}
+console.log(cameraState[cameraCounter]);
+}
+
+
+//makes radians normal numbers instead of stuipid math
+function radToDeg ( degrees ) {
+  return degrees * (Math.PI / 180);
 }
 
 function gravity(){
@@ -126,7 +174,7 @@ function checkCollision(){
   grounded = false;
   gravT = true;
   floorObj.forEach(instance => {
-    if (player1.meshBB.intersectsBox(instance)){
+    if (player1.meshBB.intersectsBox(instance) && !(player1.mesh.position.y < instance.max.y + 0.5)){
       console.log("im screamn")
       grounded = true;
       gravT = false;
@@ -134,7 +182,9 @@ function checkCollision(){
   })
 }
 
+
 //------------------------------------------------------------------------------
+
 
 window.addEventListener('keyup', (e) => {
     switch (e.keyCode){
@@ -152,6 +202,18 @@ window.addEventListener('keyup', (e) => {
         break;
       case 32: // space
         spaceDown = false;
+        break;
+      case 81: // q
+        qDown = false;    
+        orthCamera.rotateY(radToDeg(-90));
+        cameraCounter -= 1;
+        console.log("q")
+        break;
+      case 69: // e
+        eDown = false;
+        orthCamera.rotateY(radToDeg(90));
+        cameraCounter += 1;
+        console.log("e")
         break;
     }
 });
@@ -177,8 +239,31 @@ window.addEventListener('keyup', (e) => {
         spaceDown = true;
         console.log("space")
         break;
+      case 81: // q
+        qDown = true;
+        console.log("q")
+        break;
+      case 69: // e
+        eDown = true;
+        console.log("e")
+        break;
     }
 });
+
+function movementOverall(){
+  if(cameraCounter == 0){
+    movementZpos()
+  }
+  else if(cameraCounter == 1){
+    movementXpos()
+  }
+  else if(cameraCounter == 2){
+    movementZneg()
+  }
+  else if(cameraCounter == 3){
+    movementXneg()
+  }
+}
 
 //------------------------------------------------------------------------------
 function animate() {
@@ -188,8 +273,9 @@ function animate() {
   player1.meshBB.setFromObject(player1.mesh);
 
   checkCollision();
-  movementZpos();
+  movementOverall();
   
+  cCountController();
   deathCheck();
 
   requestAnimationFrame(animate);
