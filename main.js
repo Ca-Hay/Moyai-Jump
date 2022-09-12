@@ -17,10 +17,10 @@ orthCamera.position.set(0,0,0);
 const devCamera = new THREE.PerspectiveCamera(
   75,
   aspectRatio,
-  -20,
+  0.1,
   1000
 );
-devCamera.position.set(0,0,0);
+devCamera.position.set(0,6,20);
 devCamera.lookAt(0,0,0);
 
 //renderer settings
@@ -64,8 +64,8 @@ class player {
     constructor(x, y, z, w, h, l) {
       this.geometry = new THREE.BoxGeometry(w, h, l),
       this.playerTexture = [
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiRight.png')}),         //Left   pz
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiLeft.png')}),        //Right  nz
+        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiRight.png')}),        //Left   pz
+        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiLeft.png')}),         //Right  nz
         new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Top    py
         new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Bottom ny
         new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiFront.png')}),        //Front  px
@@ -83,16 +83,17 @@ class player {
 }
 
 const player1 = new player(0, 4, 0, 1, 1, 1);
-const floor1 = new floor(-3, -3, 0, 3, 1, 3);
-const floor2 = new floor(3, -3, 0, 3, 1, 3);
-const floor3 = new floor(0, -5, 0, 3, 1, 3);
+const floor1 = new floor(0, -2, 0, 4, 1, 4);
+const floor2 = new floor(-8, 1, 5, 2, 1, 2);
+const floor3 = new floor(12, 3, 9, 2, 1, 2);
+const floor4 = new floor(0, 6, 0, 12, 1, 12);
 
 //------------------------------------------------------------------------------
 //functions
-const floorObj = [floor1.meshBB, floor2.meshBB, floor3.meshBB];
+const floorObj = [floor1.meshBB, floor2.meshBB, floor3.meshBB, floor4.meshBB];
 
-let gravT = false;
-let grounded = false;
+let gravity = true;
+let onGround = false;
 let wDown = false;
 let sDown = false;
 let aDown = false;
@@ -106,36 +107,44 @@ let speed = 0.2;
 function movementZpos(){
   if(aDown === true) {
       player1.mesh.position.x -= 1* speed;
+      orthCamera.position.x -= 1* speed;
   };
   if(dDown === true) {
       player1.mesh.position.x += 1* speed;
+      orthCamera.position.x += 1* speed;
   };
 }
 
 function movementZneg(){
   if(aDown === true) {
       player1.mesh.position.x += 1* speed;
+      orthCamera.position.x += 1* speed;
   };
   if(dDown === true) {
       player1.mesh.position.x -= 1* speed;
+      orthCamera.position.x -= 1* speed;
   };
 }
 
 function movementXpos(){
   if(aDown === true) {
       player1.mesh.position.z += 1* speed;
+      orthCamera.position.z += 1* speed;
   };
   if(dDown === true) {
       player1.mesh.position.z -= 1* speed;
+      orthCamera.position.z -= 1* speed;
   };
 }
 
 function movementXneg(){
   if(aDown === true) {
       player1.mesh.position.z -= 1* speed;
+      orthCamera.position.z -= 1* speed;
   };
   if(dDown === true) {
       player1.mesh.position.z += 1* speed;
+      orthCamera.position.z += 1* speed;
   };
 }
 
@@ -152,34 +161,38 @@ if (cameraCounter === -1){
 console.log(cameraState[cameraCounter]);
 }
 
-
 //makes radians normal numbers instead of stuipid math
 function radToDeg ( degrees ) {
   return degrees * (Math.PI / 180);
 }
 
-function gravity(){
-  if (gravT){
-  player1.mesh.position.y -= 0.25;
-  }
-}
-
 function deathCheck(){
   if(player1.mesh.position.y < -20){
     player1.mesh.position.set(0, 4, 0);
+    orthCamera.position.set(0, 0, 0);
   } 
 }
 
 function checkCollision(){
-  grounded = false;
-  gravT = true;
+  onGround = false;
+  gravity = true;
   floorObj.forEach(instance => {
-    if (player1.meshBB.intersectsBox(instance) && !(player1.mesh.position.y < instance.max.y + 0.5)){
-      console.log("im screamn")
-      grounded = true;
-      gravT = false;
+    if (player1.meshBB.intersectsBox(instance) && !(player1.mesh.position.y < instance.max.y)){
+      console.log("i am grounded")
+      onGround = true;
+      gravity = false;
     }
   })
+}
+
+function budgetJump(){
+  if(onGround == false){
+    player1.mesh.position.y -= 0.2;
+  }
+  else if (onGround == true && spaceDown == true){
+    player1.mesh.position.y += 3;
+  }
+
 }
 
 
@@ -266,15 +279,15 @@ function movementOverall(){
 }
 
 //------------------------------------------------------------------------------
+
 function animate() {
   renderer.render(scene, orthCamera);
-
-  gravity();
   player1.meshBB.setFromObject(player1.mesh);
 
   checkCollision();
   movementOverall();
-  
+
+  budgetJump();
   cCountController();
   deathCheck();
 
