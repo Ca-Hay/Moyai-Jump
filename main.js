@@ -94,6 +94,8 @@ const floorObj = [floor1.meshBB, floor2.meshBB, floor3.meshBB, floor4.meshBB];
 
 let gravity = true;
 let onGround = false;
+let isJumping = false;
+let jumpCount = 0;
 let wDown = false;
 let sDown = false;
 let aDown = false;
@@ -178,23 +180,35 @@ function checkCollision(){
   gravity = true;
   floorObj.forEach(instance => {
     if (player1.meshBB.intersectsBox(instance) && !(player1.mesh.position.y < instance.max.y)){
-      console.log("i am grounded")
+      //console.log("i am grounded")
       onGround = true;
+      jumpCount = 0;
       gravity = false;
     }
   })
 }
 
-function budgetJump(){
-  if(onGround == false){
-    player1.mesh.position.y -= 0.2;
+function yump(){
+  if(onGround === true && spaceDown === true){
+    isJumping = true;
   }
-  else if (onGround == true && spaceDown == true){
-    player1.mesh.position.y += 3;
+  if(jumpCount<15 && isJumping === true){
+    player1.mesh.position.y += 0.25
+    jumpCount +=1
+  } else if(jumpCount >= 15){
+    isJumping = false;
   }
-
 }
 
+function grav(){
+  if(onGround === false && isJumping === false){
+    player1.mesh.position.y -= 0.25
+  }
+}
+
+//grav = number^index
+// index = index + 1
+//ifgrounded index = 0;
 
 //------------------------------------------------------------------------------
 
@@ -287,7 +301,8 @@ function animate() {
   checkCollision();
   movementOverall();
 
-  budgetJump();
+  grav();
+  yump();
   cCountController();
   deathCheck();
 
