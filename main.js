@@ -45,52 +45,61 @@ scene.add(ambient);
 
 class floor {
     constructor(x, y, z, w, h, l) {
-        this.mesh = new THREE.Mesh(
-            new THREE.BoxGeometry(w, h, l),
-            new THREE.MeshLambertMaterial( {color: 0xf0f0f0 } )
-        );
-        this.mesh.castShadow = true;
-        this.mesh.recieveShadow = true;
-        this.mesh.position.set(x, y, z);
+      this.mesh = new THREE.Mesh(
+          new THREE.BoxGeometry(w, h, l),
+          new THREE.MeshLambertMaterial( {color: 0xf0f0f0 } )
+      );
 
-        this.meshBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
-        this.meshBB.setFromObject(this.mesh);
+    this.w = w;
+    this.h = h;
+    this.l = l;
 
-        scene.add(this.mesh);
+    this.x = x;
+    this.y = y;
+    this.z = z;
+
+    this.mesh.castShadow = true;
+    this.mesh.recieveShadow = true;
+    this.mesh.position.set(x, y, z);
+
+    this.meshBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
+    this.meshBB.setFromObject(this.mesh);
+
+    scene.add(this.mesh);
     }
 }
 
 class player {
-    constructor(x, y, z, w, h, l) {
-      this.geometry = new THREE.BoxGeometry(w, h, l),
-      this.playerTexture = [
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiRight.png')}),        //Left   pz
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiLeft.png')}),         //Right  nz
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Top    py
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Bottom ny
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiFront.png')}),        //Front  px
-        new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiBack.png')}),         //Back   nx
-      ];
-      this.mesh = new THREE.Mesh(this.geometry, this.playerTexture);
-      this.mesh.castShadow = true;
-      this.mesh.position.set(x, y, z);
+  constructor(x, y, z, w, h, l) {
+    this.geometry = new THREE.BoxGeometry(w, h, l),
+    this.playerTexture = [
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiRight.png')}),        //Left   pz
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiLeft.png')}),         //Right  nz
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Top    py
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Bottom ny
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiFront.png')}),        //Front  px
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiBack.png')}),         //Back   nx
+    ];
+    this.mesh = new THREE.Mesh(this.geometry, this.playerTexture);
+    this.mesh.castShadow = true;
+    this.mesh.position.set(x, y, z);
 
-      this.meshBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
-      this.meshBB.setFromArray(this.mesh);
+    this.meshBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
+    this.meshBB.setFromArray(this.mesh);
 
-      scene.add(this.mesh);
-    }
+    scene.add(this.mesh);
+  }
 }
 
 const player1 = new player(0, 4, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 4, 1, 4);
 const floor2 = new floor(-8, 1, 5, 2, 1, 2);
-const floor3 = new floor(12, 3, 9, 2, 1, 2);
+const floor3 = new floor(10, 3, 9, 2, 1, 2);
 const floor4 = new floor(0, 6, 0, 12, 1, 12);
 
 //------------------------------------------------------------------------------
 //functions
-const floorObj = [floor1.meshBB, floor2.meshBB, floor3.meshBB, floor4.meshBB];
+const floorObj = [floor1, floor2, floor3, floor4];
 
 let gravity = true;
 let onGround = false;
@@ -150,6 +159,28 @@ function movementXneg(){
   };
 }
 
+function expandX(){
+  if(cameraState[cameraCounter] == 2 || cameraState[cameraCounter] == 4){
+    floorObj.forEach(instance => {
+      instance.meshBB.max.setX(100);
+      instance.meshBB.min.setX(-100);      
+      instance.meshBB.max.setZ(instance.z + instance.l/2);
+      instance.meshBB.min.setZ(instance.z - instance.l/2);
+    })
+  }
+}
+
+function expandZ(){
+  if(cameraState[cameraCounter] == 1 || cameraState[cameraCounter] == 3){
+    floorObj.forEach(instance => {
+      instance.meshBB.max.setZ(100);
+      instance.meshBB.min.setZ(-100);      
+      instance.meshBB.max.setX(instance.x + instance.w/2);
+      instance.meshBB.min.setX(instance.x - instance.w/2);
+    })
+  }
+}
+
 const cameraState = [1, 2, 3, 4];
 let cameraCounter = 0;
 
@@ -179,7 +210,7 @@ function checkCollision(){
   onGround = false;
   gravity = true;
   floorObj.forEach(instance => {
-    if (player1.meshBB.intersectsBox(instance) && !(player1.mesh.position.y < instance.max.y)){
+    if (player1.meshBB.intersectsBox(instance.meshBB) && !(player1.mesh.position.y < instance.meshBB.max.y)){
       //console.log("i am grounded")
       onGround = true;
       jumpCount = 0;
@@ -192,10 +223,10 @@ function yump(){
   if(onGround === true && spaceDown === true){
     isJumping = true;
   }
-  if(jumpCount<15 && isJumping === true){
+  if(jumpCount<150 && isJumping === true && spaceDown === true){
     player1.mesh.position.y += 0.25
     jumpCount +=1
-  } else if(jumpCount >= 15){
+  } else if(jumpCount >= 15 || spaceDown === false){
     isJumping = false;
   }
 }
@@ -206,12 +237,7 @@ function grav(){
   }
 }
 
-//grav = number^index
-// index = index + 1
-//ifgrounded index = 0;
-
 //------------------------------------------------------------------------------
-
 
 window.addEventListener('keyup', (e) => {
     switch (e.keyCode){
@@ -298,6 +324,8 @@ function animate() {
   renderer.render(scene, orthCamera);
   player1.meshBB.setFromObject(player1.mesh);
 
+  expandZ();
+  expandX();
   checkCollision();
   movementOverall();
 
