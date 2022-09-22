@@ -49,7 +49,6 @@ class floor {
           new THREE.BoxGeometry(w, h, l),
           new THREE.MeshLambertMaterial( {color: 0xf0f0f0 } )
       );
-
     this.w = w;
     this.h = h;
     this.l = l;
@@ -93,9 +92,9 @@ class player {
 
 const player1 = new player(0, 4, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 4, 1, 4);
-const floor2 = new floor(-8, 1, 5, 2, 1, 2);
-const floor3 = new floor(10, 3, 9, 2, 1, 2);
-const floor4 = new floor(0, 6, 0, 12, 1, 12);
+const floor2 = new floor(-8, 1, 6, 2, 1, 2);
+const floor3 = new floor(10, 3, 12, 2, 1, 2);
+const floor4 = new floor(0, 6, -4, 12, 1, 12);
 
 //------------------------------------------------------------------------------
 //functions
@@ -105,6 +104,11 @@ let gravity = true;
 let onGround = false;
 let isJumping = false;
 let jumpCount = 0;
+let canRotate = true;
+let isRotatingQ = false;
+let isRotatingE = false;
+let rotCount = 0;
+let rotCount2 = 0;
 let wDown = false;
 let sDown = false;
 let aDown = false;
@@ -114,48 +118,44 @@ let eDown = false;
 let spaceDown = false;
 let speed = 0.2;
 
+function adjustCameraPos(){
+  orthCamera.position.x = player1.mesh.position.x;
+  orthCamera.position.z = player1.mesh.position.z;
+}
 
 function movementZpos(){
   if(aDown === true) {
       player1.mesh.position.x -= 1* speed;
-      orthCamera.position.x -= 1* speed;
   };
   if(dDown === true) {
       player1.mesh.position.x += 1* speed;
-      orthCamera.position.x += 1* speed;
   };
 }
 
 function movementZneg(){
   if(aDown === true) {
       player1.mesh.position.x += 1* speed;
-      orthCamera.position.x += 1* speed;
   };
   if(dDown === true) {
       player1.mesh.position.x -= 1* speed;
-      orthCamera.position.x -= 1* speed;
   };
 }
 
 function movementXpos(){
   if(aDown === true) {
       player1.mesh.position.z += 1* speed;
-      orthCamera.position.z += 1* speed;
   };
   if(dDown === true) {
       player1.mesh.position.z -= 1* speed;
-      orthCamera.position.z -= 1* speed;
   };
 }
 
 function movementXneg(){
   if(aDown === true) {
       player1.mesh.position.z -= 1* speed;
-      orthCamera.position.z -= 1* speed;
   };
   if(dDown === true) {
       player1.mesh.position.z += 1* speed;
-      orthCamera.position.z += 1* speed;
   };
 }
 
@@ -212,9 +212,17 @@ function checkCollision(){
   floorObj.forEach(instance => {
     if (player1.meshBB.intersectsBox(instance.meshBB) && !(player1.mesh.position.y < instance.meshBB.max.y)){
       //console.log("i am grounded")
+      if(cameraState[cameraCounter] == 1 || cameraState[cameraCounter] == 3){
+      player1.mesh.position.z = instance.z
+      }
+      if(cameraState[cameraCounter] == 2 || cameraState[cameraCounter] == 4){
+      player1.mesh.position.x = instance.x
+      }
       onGround = true;
-      jumpCount = 0;
       gravity = false;
+      if(isJumping == false){
+        jumpCount = 0;
+      }
     }
   })
 }
@@ -223,7 +231,7 @@ function yump(){
   if(onGround === true && spaceDown === true){
     isJumping = true;
   }
-  if(jumpCount<150 && isJumping === true && spaceDown === true){
+  if(jumpCount<15 && isJumping === true && spaceDown === true){
     player1.mesh.position.y += 0.25
     jumpCount +=1
   } else if(jumpCount >= 15 || spaceDown === false){
@@ -237,6 +245,37 @@ function grav(){
   }
 }
 
+function cameraRot(){
+//q
+  if(qDown == true && canRotate == true){
+    isRotatingQ = true;
+    canRotate = false;
+  }
+  if(rotCount < 9 && isRotatingQ == true){
+    orthCamera.rotateY(radToDeg(-10));
+    rotCount += 1;
+  } else if(rotCount >= 9){
+    isRotatingQ = false;
+    rotCount = 0
+    cameraCounter -= 1;
+    canRotate = true;
+    
+  }
+  //e
+  if(eDown == true && canRotate == true){
+    isRotatingE = true;
+    canRotate = false;
+  }
+  if(rotCount2 < 9 && isRotatingE == true){
+    orthCamera.rotateY(radToDeg(10));
+    rotCount2 += 1;
+  } else if(rotCount2 >= 9){
+    isRotatingE = false;
+    rotCount2 = 0
+    cameraCounter += 1;
+    canRotate = true;
+  }
+}
 //------------------------------------------------------------------------------
 
 window.addEventListener('keyup', (e) => {
@@ -258,14 +297,14 @@ window.addEventListener('keyup', (e) => {
         break;
       case 81: // q
         qDown = false;    
-        orthCamera.rotateY(radToDeg(-90));
-        cameraCounter -= 1;
+        //orthCamera.rotateY(radToDeg(-90));
+        //cameraCounter -= 1;
         console.log("q")
         break;
       case 69: // e
         eDown = false;
-        orthCamera.rotateY(radToDeg(90));
-        cameraCounter += 1;
+        //orthCamera.rotateY(radToDeg(90));
+        //cameraCounter += 1;
         console.log("e")
         break;
     }
@@ -323,11 +362,14 @@ function movementOverall(){
 function animate() {
   renderer.render(scene, orthCamera);
   player1.meshBB.setFromObject(player1.mesh);
+  cameraRot();
 
   expandZ();
   expandX();
   checkCollision();
   movementOverall();
+
+  adjustCameraPos();
 
   grav();
   yump();
