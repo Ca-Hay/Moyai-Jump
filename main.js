@@ -65,7 +65,13 @@ class floor {
     this.meshBB.setFromObject(this.mesh);
 
     scene.add(this.mesh);
-    }
+  }
+}
+
+class decor{
+  constructor(x, y, z, w, h, l) {
+
+  }
 }
 
 class player {
@@ -92,7 +98,7 @@ class player {
 
 const player1 = new player(0, 4, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 4, 1, 4);
-const floor2 = new floor(-8, 1, 6, 2, 1, 2);
+const floor2 = new floor(-10, 1, 6, 2, 1, 2);
 const floor3 = new floor(10, 3, 12, 2, 1, 2);
 const floor4 = new floor(0, 6, -4, 12, 1, 12);
 
@@ -216,7 +222,7 @@ function checkCollision(){
       player1.mesh.position.z = instance.z
       }
       if(cameraState[cameraCounter] == 2 || cameraState[cameraCounter] == 4){
-      player1.mesh.position.x = instance.x
+        player1.mesh.position.x = instance.x
       }
       onGround = true;
       gravity = false;
@@ -276,6 +282,7 @@ function cameraRot(){
     canRotate = true;
   }
 }
+
 //------------------------------------------------------------------------------
 
 window.addEventListener('keyup', (e) => {

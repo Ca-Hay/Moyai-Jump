@@ -1,8 +1,51 @@
 body {
     margin: 0px ;
     height: 100vh;
+    background-color: #ADD8E6;
 }
 
 canvas {
     display: block;
+}
+
+#butt{
+    position:absolute;
+    top: 38%;
+    left: 44%;
+
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    background-color: white;
+    padding: 16px 32px;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+#butt:hover{
+    background-color: grey;
+}
+
+#buttutorial{
+    position:absolute;
+    top: 48%;
+    left: 45%;
+
+    border: none;
+    color: black;
+    text-align: center;
+
+
+    text-decoration: none;
+    background-color: white;
+    padding: 16px 32px;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+#buttutorial:hover{
+    background-color: grey;
 }
