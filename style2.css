@@ -1,0 +1,125 @@
+body {
+    margin: 0px ;
+    height: 100vh;
+    background-color: #ADD8E6;
+}
+
+#BTut{
+    position:absolute;
+    top: 75%;
+    left: 22.5%;
+
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ADD8E6;
+    padding: 16px 32px;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+#BTut:hover{
+    background-color: grey;
+}
+#B1{
+    position:absolute;
+    top: 75%;
+    left: 40%;
+
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ADD8E6;
+    padding: 16px 32px;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+#B1:hover{
+    background-color: grey;
+}
+#B2{
+    position:absolute;
+    top: 75%;
+    left: 50%;
+
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ADD8E6;
+    padding: 16px 32px;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+#B2:hover{
+    background-color: grey;
+}
+#B3{
+    position:absolute;
+    top: 75%;
+    left: 60%;
+
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ADD8E6;
+    padding: 16px 32px;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+#B3:hover{
+    background-color: grey;
+}
+#B4{
+    position:absolute;
+    top: 75%;
+    left: 70%;
+
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ADD8E6;
+    padding: 16px 32px;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+#B4:hover{
+    background-color: grey;
+}
+#inLevelButt{
+    position:absolute;
+    top: 10px;
+    left: 10px;
+
+    border: none;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    background-color: #ADD8E6;
+    padding: 16px 32px;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    cursor: pointer;
+}
+#inLevelButt:hover{
+    background-color: grey;
+}
+#logo{
+    position: absolute;
+    top: 0;
+    left: 22%;
+}
