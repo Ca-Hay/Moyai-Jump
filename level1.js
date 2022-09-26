@@ -277,6 +277,7 @@ function yump(){
 function grav(){
   if(onGround === false && isJumping === false){
     player1.mesh.position.y -= 0.25
+    // RAHHHHh
   }
 }
 
