@@ -1,7 +1,7 @@
 body {
     margin: 0px ;
     height: 100vh;
-    background-color: #ADD8E6;
+    background-color: #b9ffff;
 }
 
 canvas {
@@ -10,14 +10,14 @@ canvas {
 
 #butt{
     position:absolute;
-    top: 70%;
-    left: 22%;
+    top: 63%;
+    left: 32%;
 
     border: none;
     color: black;
     text-align: center;
     text-decoration: none;
-    background-color: #ADD8E6;
+    background-color: white;
     padding: 16px 32px;
     display: inline-block;
     font-size: 16px;
@@ -28,30 +28,26 @@ canvas {
     background-color: grey;
 }
 
-#buttutorial{
-    position:absolute;
-    top: 70%;
-    left: 33.5%;
-
-    border: none;
-    color: black;
-    text-align: center;
-
-
-    text-decoration: none;
-    background-color: #ADD8E6;
-    padding: 16px 32px;
-    display: inline-block;
-    font-size: 16px;
+#foont{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    cursor: pointer;
-}
-#buttutorial:hover{
-    background-color: grey;
 }
 
 #logo{
     position: absolute;
-    top: 0%;
+    top: 10%;
     left: 22%;
+}
+
+#info1{
+    position: absolute;
+    top: 14%;
+}
+#info2{
+    position: absolute;
+    top: 15%;
+}
+#info3{
+    position: absolute;
+    top: 110%;
+    left: 5%;
 }

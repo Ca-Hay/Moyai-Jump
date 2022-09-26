@@ -68,15 +68,18 @@ class floor {
   }
 }
 
-class decor{
-  constructor(x, y, z, w, h, l, colour) {
+class button {
+  constructor(x, y, z, w, h, l, col) {
     this.mesh = new THREE.Mesh(
       new THREE.BoxGeometry(w, h, l),
-      new THREE.MeshLambertMaterial( {color: colour })
+      new THREE.MeshLambertMaterial( {color: col })
     );
     this.mesh.castShadow = true;
     this.mesh.recieveShadow = true;
     this.mesh.position.set(x, y, z);
+    
+    this.meshBB = new THREE.Box3(new THREE.Vector3(), new THREE.Vector3());
+    this.meshBB.setFromObject(this.mesh);
 
     scene.add(this.mesh);
   }
@@ -104,15 +107,19 @@ class player {
   }
 }
 
-const player1 = new player(0, 4, 0, 1, 1, 1, 0x808080);
+const player1 = new player(0, 4, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 4, 1, 4, 0x808080);
-const floor2 = new floor(-10, 1, 6, 2, 1, 2, 0x808080);
-const floor3 = new floor(10, 3, 12, 2, 1, 2, 0x808080);
-const floor4 = new floor(0, 6, -4, 12, 1, 12, 0xff0000);
-
+const floor2 = new floor(16, -2 , 0, 2, 1, 2, 0x909090);
+const floor3 = new floor(11, 1, -10, 2, 1, 2, 0x808080);
+const floor4 = new floor(16, 4, 3, 2, 1, 2, 0x808080);
+const floor5 = new floor(0, 4, 5, 2, 1, 2, 0x808080);
+const floor6 = new floor(-16, 100, 10, 2, 1, 2, 0xFF0000);
+const floor7 = new floor(-4, 8, -10, 2, 1, 2, 0x808080); //ONE THAT SHOULD HAVE SWITCH ON
+const button1 = new button(-4, 8.75, -10, 0.5, 0.5, 0.5, 0x0000FF)
 //------------------------------------------------------------------------------
 //functions
-const floorObj = [floor1, floor2, floor3, floor4];
+const floorObj = [floor1, floor2, floor3, floor4, floor5, floor6, floor7];
+const thud = new Audio("img/vineboom.mp3");
 
 let gravity = true;
 let onGround = false;
@@ -121,6 +128,7 @@ let jumpCount = 0;
 let canRotate = true;
 let isRotatingQ = false;
 let isRotatingE = false;
+let buttonPressed = false;
 let rotCount = 0;
 let rotCount2 = 0;
 let wDown = false;
@@ -184,6 +192,19 @@ function expandX(){
   }
 }
 
+function buttonLogic(){
+  if(player1.meshBB.intersectsBox(button1.meshBB)){
+    buttonPressed = true;
+  }if(buttonPressed == true){
+    //floor6(-16, 4, 7, 2, 1, 2, 0x808080);
+    floor6.mesh.position.y = 4
+    floor6.meshBB.setFromObject(floor6.mesh);
+  } else if(buttonPressed == false){
+    floor6.mesh.position.y = 100
+    floor6.meshBB.setFromObject(floor6.mesh);
+  }
+}
+
 function expandZ(){
   if(cameraState[cameraCounter] == 1 || cameraState[cameraCounter] == 3){
     floorObj.forEach(instance => {
@@ -217,6 +238,7 @@ function deathCheck(){
   if(player1.mesh.position.y < -20){
     player1.mesh.position.set(0, 4, 0);
     orthCamera.position.set(0, 0, 0);
+    buttonPressed = false;
   } 
 }
 
@@ -225,7 +247,6 @@ function checkCollision(){
   gravity = true;
   floorObj.forEach(instance => {
     if (player1.meshBB.intersectsBox(instance.meshBB) && !(player1.mesh.position.y < instance.meshBB.max.y)){
-      //console.log("i am grounded")
       if(cameraState[cameraCounter] == 1 || cameraState[cameraCounter] == 3){
       player1.mesh.position.z = instance.z
       }
@@ -262,12 +283,14 @@ function grav(){
 function cameraRot(){
 //q
   if(qDown == true && canRotate == true){
+    thud.play();
     isRotatingQ = true;
     canRotate = false;
   }
   if(rotCount < 9 && isRotatingQ == true){
     orthCamera.rotateY(radToDeg(-10));
     rotCount += 1;
+    
   } else if(rotCount >= 9){
     isRotatingQ = false;
     rotCount = 0
@@ -277,6 +300,7 @@ function cameraRot(){
   }
   //e
   if(eDown == true && canRotate == true){
+    thud.play();
     isRotatingE = true;
     canRotate = false;
   }
@@ -379,6 +403,7 @@ function animate() {
   player1.meshBB.setFromObject(player1.mesh);
   cameraRot();
 
+  buttonLogic();
   expandZ();
   expandX();
   checkCollision();

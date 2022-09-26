@@ -1,19 +1,19 @@
 body {
     margin: 0px ;
     height: 100vh;
-    background-color: #ADD8E6;
+    background-color: #b9ffff;
 }
 
 #BTut{
     position:absolute;
-    top: 75%;
+    top: 80%;
     left: 22.5%;
 
     border: none;
     color: black;
     text-align: center;
     text-decoration: none;
-    background-color: #ADD8E6;
+    background-color: white;
     padding: 16px 32px;
     display: inline-block;
     font-size: 16px;
@@ -25,14 +25,14 @@ body {
 }
 #B1{
     position:absolute;
-    top: 75%;
+    top: 80%;
     left: 40%;
 
     border: none;
     color: black;
     text-align: center;
     text-decoration: none;
-    background-color: #ADD8E6;
+    background-color: white;
     padding: 16px 32px;
     display: inline-block;
     font-size: 16px;
@@ -44,14 +44,14 @@ body {
 }
 #B2{
     position:absolute;
-    top: 75%;
+    top: 80%;
     left: 50%;
 
     border: none;
     color: black;
     text-align: center;
     text-decoration: none;
-    background-color: #ADD8E6;
+    background-color: white;
     padding: 16px 32px;
     display: inline-block;
     font-size: 16px;
@@ -63,14 +63,14 @@ body {
 }
 #B3{
     position:absolute;
-    top: 75%;
+    top: 80%;
     left: 60%;
 
     border: none;
     color: black;
     text-align: center;
     text-decoration: none;
-    background-color: #ADD8E6;
+    background-color: white;
     padding: 16px 32px;
     display: inline-block;
     font-size: 16px;
@@ -82,14 +82,14 @@ body {
 }
 #B4{
     position:absolute;
-    top: 75%;
+    top: 80%;
     left: 70%;
 
     border: none;
     color: black;
     text-align: center;
     text-decoration: none;
-    background-color: #ADD8E6;
+    background-color: white;
     padding: 16px 32px;
     display: inline-block;
     font-size: 16px;
@@ -108,7 +108,7 @@ body {
     color: black;
     text-align: center;
     text-decoration: none;
-    background-color: #ADD8E6;
+    background-color: white;
     padding: 16px 32px;
     display: inline-block;
     font-size: 16px;
@@ -120,6 +120,6 @@ body {
 }
 #logo{
     position: absolute;
-    top: 0;
+    top: 10%;
     left: 22%;
 }
