@@ -86,12 +86,12 @@ class player {
   constructor(x, y, z, w, h, l) {
     this.geometry = new THREE.BoxGeometry(w, h, l),
     this.playerTexture = [
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiRight.png')}),        //Left   pz
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiLeft.png')}),         //Right  nz
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Top    py
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Bottom ny
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiFront.png')}),        //Front  px
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiBack.png')}),         //Back   nx
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiRight.png')}),        //Left   pz
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiLeft.png')}),         //Right  nz
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiTopandBottom.png')}), //Top    py
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiTopandBottom.png')}), //Bottom ny
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiFront.png')}),        //Front  px
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiBack.png')}),         //Back   nx
     ];
     this.mesh = new THREE.Mesh(this.geometry, this.playerTexture);
     this.mesh.castShadow = true;
@@ -108,7 +108,8 @@ const player1 = new player(0, 4, 0, 1, 1, 1, 0x808080);
 const floor1 = new floor(0, -2, 0, 4, 1, 4, 0x808080);
 const floor2 = new floor(-10, 1, 6, 2, 1, 2, 0x808080);
 const floor3 = new floor(10, 3, 12, 2, 1, 2, 0x808080);
-const floor4 = new floor(0, 6, -4, 12, 1, 12, 0xff0000);
+const floor4 = new floor(0, 6, -4, 12, 1, 12, 0x808080);
+const winCon = new floor(0, 7, -4, 0.5, 0.5, 0.5, 0xff0000);
 
 //------------------------------------------------------------------------------
 //functions
@@ -291,6 +292,12 @@ function cameraRot(){
   }
 }
 
+function win(){
+  if(player1.meshBB.intersectsBox(winCon.meshBB)){
+    window.location.href = "./levelselect.html"
+  }
+}
+
 //------------------------------------------------------------------------------
 
 window.addEventListener('keyup', (e) => {
@@ -390,6 +397,7 @@ function animate() {
   yump();
   cCountController();
   deathCheck();
+  win();
 
   requestAnimationFrame(animate);
 };

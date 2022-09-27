@@ -89,12 +89,12 @@ class player {
   constructor(x, y, z, w, h, l) {
     this.geometry = new THREE.BoxGeometry(w, h, l),
     this.playerTexture = [
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiRight.png')}),        //Left   pz
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiLeft.png')}),         //Right  nz
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Top    py
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiTopandBottom.png')}), //Bottom ny
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiFront.png')}),        //Front  px
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../img/moyaiBack.png')}),         //Back   nx
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiRight.png')}),        //Left   pz
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiLeft.png')}),         //Right  nz
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiTopandBottom.png')}), //Top    py
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiTopandBottom.png')}), //Bottom ny
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiFront.png')}),        //Front  px
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiBack.png')}),         //Back   nx
     ];
     this.mesh = new THREE.Mesh(this.geometry, this.playerTexture);
     this.mesh.castShadow = true;
@@ -113,13 +113,15 @@ const floor2 = new floor(16, -2 , 0, 2, 1, 2, 0x909090);
 const floor3 = new floor(11, 1, -10, 2, 1, 2, 0x808080);
 const floor4 = new floor(16, 4, 3, 2, 1, 2, 0x808080);
 const floor5 = new floor(0, 4, 5, 2, 1, 2, 0x808080);
-const floor6 = new floor(-16, 100, 10, 2, 1, 2, 0xFF0000);
+const floor6 = new floor(-16, 100, 10, 2, 1, 2, 0x808080);
 const floor7 = new floor(-4, 8, -10, 2, 1, 2, 0x808080); //ONE THAT SHOULD HAVE SWITCH ON
 const button1 = new button(-4, 8.75, -10, 0.5, 0.5, 0.5, 0x0000FF)
+const winCon = new floor(-16, 100, 10, 0.5, 0.5, 0.5, 0xFF0000)
 //------------------------------------------------------------------------------
 //functions
 const floorObj = [floor1, floor2, floor3, floor4, floor5, floor6, floor7];
-const thud = new Audio("img/vineboom.mp3");
+const thud = new Audio("public/vineboom.mp3");
+const aughh = new Audio("public/Aughh.mp3")
 
 let gravity = true;
 let onGround = false;
@@ -199,9 +201,13 @@ function buttonLogic(){
     //floor6(-16, 4, 7, 2, 1, 2, 0x808080);
     floor6.mesh.position.y = 4
     floor6.meshBB.setFromObject(floor6.mesh);
+    winCon.mesh.position.y = 5
+    winCon.meshBB.setFromObject(winCon.mesh);
   } else if(buttonPressed == false){
     floor6.mesh.position.y = 100
     floor6.meshBB.setFromObject(floor6.mesh);
+    winCon.mesh.position.y = 100
+    winCon.meshBB.setFromObject(winCon.mesh);
   }
 }
 
@@ -316,6 +322,13 @@ function cameraRot(){
   }
 }
 
+function win(){
+  if(player1.meshBB.intersectsBox(winCon.meshBB)){
+    window.location.href = "./levelselect.html"
+    aughh.play();
+  }
+}
+
 //------------------------------------------------------------------------------
 
 window.addEventListener('keyup', (e) => {
@@ -416,6 +429,7 @@ function animate() {
   yump();
   cCountController();
   deathCheck();
+  win();
 
   requestAnimationFrame(animate);
 };
