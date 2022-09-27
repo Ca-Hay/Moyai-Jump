@@ -109,17 +109,10 @@ class player {
 
 const player1 = new player(0, 4, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 4, 1, 4, 0x808080);
-const floor2 = new floor(16, -2 , 0, 2, 1, 2, 0x909090);
-const floor3 = new floor(11, 1, -10, 2, 1, 2, 0x808080);
-const floor4 = new floor(16, 4, 3, 2, 1, 2, 0x808080);
-const floor5 = new floor(0, 4, 5, 2, 1, 2, 0x808080);
-const floor6 = new floor(-16, 100, 10, 2, 1, 2, 0x808080);
-const floor7 = new floor(-4, 8, -10, 2, 1, 2, 0x808080); //ONE THAT SHOULD HAVE SWITCH ON
-const button1 = new button(-4, 8.75, -10, 0.5, 0.5, 0.5, 0x0000FF)
-const winCon = new floor(-16, 100, 10, 0.5, 0.5, 0.5, 0xFF0000)
+
 //------------------------------------------------------------------------------
 //functions
-const floorObj = [floor1, floor2, floor3, floor4, floor5, floor6, floor7];
+const floorObj = [floor1];
 const thud = new Audio("public/vineboom.mp3");
 const aughh = new Audio("public/Aughh.mp3")
 
@@ -419,7 +412,7 @@ function animate() {
   player1.meshBB.setFromObject(player1.mesh);
   cameraRot();
 
-  buttonLogic();
+  //buttonLogic();
   expandZ();
   expandX();
   checkCollision();
@@ -431,7 +424,7 @@ function animate() {
   yump();
   cCountController();
   deathCheck();
-  win();
+  //win();
 
   requestAnimationFrame(animate);
 };
