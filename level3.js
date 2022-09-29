@@ -91,24 +91,14 @@ class player {
 }
 
 const player1 = new player(0, 2, 0, 1, 1, 1);
-const floor1 = new floor(0, -2, 0, 6, 1, 6, 0x808080);
-const moyaiface1= new floor(0, 3, 0, 2, 1, 2, 0xEBEBEBE);
-const moyaiface2 = new floor(-3, 7, -3, 2, 1, 2, 0xEBEBEBE);
-const moyaiface3= new floor(3, 7, 3, 2, 1, 2, 0xEBEBEBE);
-const moyaiface4 = new floor(0, -3, 0, 3, 1, 3, 0x808080);
-//0xb9ffff
-const invis1 = new floor(8, -1, -8, 2, 1, 2, 0xb9ffff);
-const invis2 = new floor(-8, 2, -13, 2, 1, 2, 0xb9ffff);
-const invis3 = new floor(-12, 5, -18, 2, 1, 2, 0xb9ffff);
-const invis4 = new floor(-18, 5, 8, 2, 1, 2, 0xb9ffff);
-const invis5 = new floor(6, 7, 14, 2, 1, 2, 0xb9ffff);
-const invis6 = new floor(0, 9, 0, 2, 1, 2, 0xb9ffff);
+const floor1 = new floor(0, -2, 0, 4, 1, 4, 0x808080);
 
-const winCon = new floor(0, 11, 0, 0.5, 0.5, 0.5, 0xff0000);
+//invisible is 0xb9ffff
+//const winCon = new floor(0, 11, 0, 0.5, 0.5, 0.5, 0xff0000);
 
 //------------------------------------------------------------------------------
 //functions
-const floorObj = [floor1, invis1, invis2, invis3, invis4, invis5, invis6];
+const floorObj = [floor1];
 const thud = new Audio("public/vineboom.mp3");
 const aughh = new Audio("public/Aughh.mp3")
 
@@ -435,7 +425,7 @@ function animate() {
   yump();
   cCountController();
   deathCheck();
-  win();
+  //win();
 
   requestAnimationFrame(animate);
 };

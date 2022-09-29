@@ -109,6 +109,9 @@ const floor1 = new floor(0, -2, 0, 4, 1, 4, 0x808080);
 const floor2 = new floor(-10, 1, 6, 2, 1, 2, 0x808080);
 const floor3 = new floor(10, 3, 12, 2, 1, 2, 0x808080);
 const floor4 = new floor(0, 6, -4, 12, 1, 12, 0x808080);
+//0xEBEBEBE
+const fakefloor = new floor(6, 0, -6, 2, 1, 2, 0xEBEBEBE);
+
 const winCon = new floor(0, 7, -4, 0.5, 0.5, 0.5, 0xff0000);
 
 //------------------------------------------------------------------------------
@@ -131,6 +134,7 @@ let dDown = false;
 let qDown = false;
 let eDown = false;
 let spaceDown = false;
+let haswon = false;
 let speed = 0.2;
 
 function adjustCameraPos(){
@@ -293,8 +297,9 @@ function cameraRot(){
 }
 
 function win(){
-  if(player1.meshBB.intersectsBox(winCon.meshBB)){
+  if(player1.meshBB.intersectsBox(winCon.meshBB) && haswon == false){
     window.location.href = "./levelselect.html"
+    haswon = true;
   }
 }
 
