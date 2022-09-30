@@ -133,6 +133,9 @@ let aDown = false;
 let dDown = false;
 let qDown = false;
 let eDown = false;
+let lArrow = false;
+let rArrow = false;
+let upArrow = false;
 let spaceDown = false;
 let haswon = false;
 let speed = 0.2;
@@ -143,37 +146,37 @@ function adjustCameraPos(){
 }
 
 function movementZpos(){
-  if(aDown === true) {
+  if(aDown === true || lArrow === true) {
       player1.mesh.position.x -= 1* speed;
   };
-  if(dDown === true) {
+  if(dDown === true || rArrow === true) {
       player1.mesh.position.x += 1* speed;
   };
 }
 
 function movementZneg(){
-  if(aDown === true) {
+  if(aDown === true || lArrow === true) {
       player1.mesh.position.x += 1* speed;
   };
-  if(dDown === true) {
+  if(dDown === true || rArrow === true) {
       player1.mesh.position.x -= 1* speed;
   };
 }
 
 function movementXpos(){
-  if(aDown === true) {
+  if(aDown === true || lArrow === true) {
       player1.mesh.position.z += 1* speed;
   };
-  if(dDown === true) {
+  if(dDown === true || rArrow === true) {
       player1.mesh.position.z -= 1* speed;
   };
 }
 
 function movementXneg(){
-  if(aDown === true) {
+  if(aDown === true || lArrow === true) {
       player1.mesh.position.z -= 1* speed;
   };
-  if(dDown === true) {
+  if(dDown === true || rArrow === true) {
       player1.mesh.position.z += 1* speed;
   };
 }
@@ -247,13 +250,13 @@ function checkCollision(){
 }
 
 function yump(){
-  if(onGround === true && spaceDown === true){
+  if(onGround === true && (spaceDown === true || wDown === true || upArrow === true)){
     isJumping = true;
   }
-  if(jumpCount<15 && isJumping === true && spaceDown === true){
+  if(jumpCount<15 && isJumping === true && (spaceDown === true || wDown === true || upArrow === true)){
     player1.mesh.position.y += 0.25
     jumpCount +=1
-  } else if(jumpCount >= 15 || spaceDown === false){
+  } else if(jumpCount >= 15 || (spaceDown === false || wDown === false || upArrow === true)){
     isJumping = false;
   }
 }
@@ -334,6 +337,15 @@ window.addEventListener('keyup', (e) => {
         //cameraCounter += 1;
         console.log("e")
         break;
+      case 37: //left arrow
+        lArrow = false;
+        break;
+      case 	39: //right arrow
+        rArrow = false
+        break;
+      case 38: // up arrow
+        upArrow = false;
+        break;
     }
 });
   window.addEventListener('keydown', (e) => {
@@ -365,6 +377,18 @@ window.addEventListener('keyup', (e) => {
       case 69: // e
         eDown = true;
         console.log("e")
+        break;
+      case 37: //left arrow
+        lArrow = true;
+        console.log("left")
+        break;
+      case 	39: //right arrow
+        rArrow = true;
+        console.log("right")
+        break;
+      case 38: // up arrow
+        upArrow = true;
+        console.log("up")
         break;
     }
 });
