@@ -92,6 +92,9 @@ class player {
 
 const player1 = new player(0, 2, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 4, 1, 4, 0x808080);
+const portalA1 = new floor(0, 2, 0, 0.75, 1.5, 0.75, 0x50C878);
+const portalB2 = new floor(0, 6, 8, 0.75, 1.5, 0.75, 0x50C878);
+
 
 //invisible is 0xb9ffff
 //const winCon = new floor(0, 11, 0, 0.5, 0.5, 0.5, 0xff0000);
@@ -256,10 +259,10 @@ function yump(){
   if(onGround === true && (spaceDown === true || wDown === true || upArrow === true)){
     isJumping = true;
   }
-  if(jumpCount<15 && isJumping === true && (spaceDown === true || wDown === true || upArrow === true)){
+  if(jumpCount<15 && isJumping === true){
     player1.mesh.position.y += 0.25
     jumpCount +=1
-  } else if(jumpCount >= 15 || (spaceDown === false || wDown === false || upArrow === true)){
+  } else if(jumpCount >= 15){
     isJumping = false;
   }
 }

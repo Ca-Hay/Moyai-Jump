@@ -41,6 +41,7 @@ canvas {
 #info1{
     position: absolute;
     top: 14%;
+    left: 5%;
 }
 #info2{
     position: absolute;
@@ -48,7 +49,7 @@ canvas {
 }
 #info3{
     position: absolute;
-    top: 130%;
+    top: 150%;
     left: 5%;
 }
 #info4{

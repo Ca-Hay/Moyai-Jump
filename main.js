@@ -253,10 +253,10 @@ function yump(){
   if(onGround === true && (spaceDown === true || wDown === true || upArrow === true)){
     isJumping = true;
   }
-  if(jumpCount<15 && isJumping === true && (spaceDown === true || wDown === true || upArrow === true)){
+  if(jumpCount<15 && isJumping === true){
     player1.mesh.position.y += 0.25
     jumpCount +=1
-  } else if(jumpCount >= 15 || (spaceDown === false || wDown === false || upArrow === true)){
+  } else if(jumpCount >= 15){
     isJumping = false;
   }
 }
