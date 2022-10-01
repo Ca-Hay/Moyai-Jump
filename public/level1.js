@@ -1,4 +1,4 @@
-import * as THREE from './node_modules/three/build/three.module.js'
+import * as THREE from '../node_modules/three/build/three.module.js'
 
 //create scene
 let scene = new THREE.Scene();
@@ -89,12 +89,12 @@ class player {
   constructor(x, y, z, w, h, l) {
     this.geometry = new THREE.BoxGeometry(w, h, l),
     this.playerTexture = [
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiRight.png')}),        //Left   pz
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiLeft.png')}),         //Right  nz
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiTopandBottom.png')}), //Top    py
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiTopandBottom.png')}), //Bottom ny
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiFront.png')}),        //Front  px
-      new THREE.MeshStandardMaterial({ map: textureLoader.load('../public/moyaiBack.png')}),         //Back   nx
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('moyaiRight.png')}),        //Left   pz
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('moyaiLeft.png')}),         //Right  nz
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('moyaiTopandBottom.png')}), //Top    py
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('moyaiTopandBottom.png')}), //Bottom ny
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('moyaiFront.png')}),        //Front  px
+      new THREE.MeshStandardMaterial({ map: textureLoader.load('moyaiBack.png')}),         //Back   nx
     ];
     this.mesh = new THREE.Mesh(this.geometry, this.playerTexture);
     this.mesh.castShadow = true;
@@ -120,8 +120,8 @@ const winCon = new floor(-30, 100, 10, 0.5, 0.5, 0.5, 0xFF0000)
 //------------------------------------------------------------------------------
 //functions
 const floorObj = [floor1, floor2, floor3, floor4, floor5, floor6, floor7];
-const thud = new Audio("public/vineboom.mp3");
-const aughh = new Audio("public/Aughh.mp3")
+const thud = new Audio("vineboom.mp3");
+const aughh = new Audio("Aughh.mp3")
 
 let gravity = true;
 let onGround = false;
