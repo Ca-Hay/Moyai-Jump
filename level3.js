@@ -92,8 +92,8 @@ class player {
 
 const player1 = new player(0, 2, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 4, 1, 4, 0x808080);
-const portalA1 = new floor(0, 2, 0, 0.75, 1.5, 0.75, 0x50C878);
-const portalB2 = new floor(0, 6, 8, 0.75, 1.5, 0.75, 0x50C878);
+const portalA1 = new floor(3, 1, 0, 0.75, 1.5, 0.75, 0x50C878);
+const portalA2 = new floor(-3, 1, 8, 0.75, 1.5, 0.75, 0x50C878);
 
 
 //invisible is 0xb9ffff
@@ -102,6 +102,7 @@ const portalB2 = new floor(0, 6, 8, 0.75, 1.5, 0.75, 0x50C878);
 //------------------------------------------------------------------------------
 //functions
 const floorObj = [floor1];
+const portalObj = [portalA1, portalA2]
 const thud = new Audio("public/vineboom.mp3");
 const aughh = new Audio("public/Aughh.mp3")
 
@@ -127,6 +128,7 @@ let rArrow = false;
 let upArrow = false;
 let haswon = false;
 let lightningCount = 0;
+let teleportSickness = false;
 let speed = 0.2;
 
 function adjustCameraPos(){
@@ -178,6 +180,12 @@ function expandX(){
       instance.meshBB.max.setZ(instance.z + instance.l/2);
       instance.meshBB.min.setZ(instance.z - instance.l/2);
     })
+    portalObj.forEach(instance => {
+      instance.meshBB.max.setX(100);
+      instance.meshBB.min.setX(-100);      
+      instance.meshBB.max.setZ(instance.z + instance.l/2);
+      instance.meshBB.min.setZ(instance.z - instance.l/2);
+    })
   }
 }
 
@@ -201,6 +209,12 @@ function buttonLogic(){
 function expandZ(){
   if(cameraState[cameraCounter] == 1 || cameraState[cameraCounter] == 3){
     floorObj.forEach(instance => {
+      instance.meshBB.max.setZ(100);
+      instance.meshBB.min.setZ(-100);      
+      instance.meshBB.max.setX(instance.x + instance.w/2);
+      instance.meshBB.min.setX(instance.x - instance.w/2);
+    })
+    portalObj.forEach(instance => {
       instance.meshBB.max.setZ(100);
       instance.meshBB.min.setZ(-100);      
       instance.meshBB.max.setX(instance.x + instance.w/2);
@@ -248,6 +262,7 @@ function checkCollision(){
       }
       onGround = true;
       gravity = false;
+      teleportSickness = false;
       if(isJumping == false){
         jumpCount = 0;
       }
@@ -319,6 +334,21 @@ function lightning(){
     }
   }else {
     renderer.setClearColor(0xb9ffff)
+  }
+}
+
+function teleportA(){
+  if(player1.meshBB.intersectsBox(portalA1.meshBB) && teleportSickness === false){
+    player1.mesh.position.x = portalA2.x;
+    player1.mesh.position.z = portalA2.z;
+    player1.mesh.position.y = portalA2.y;
+    teleportSickness = true;
+  }
+  if(player1.meshBB.intersectsBox(portalA2.meshBB) && teleportSickness === false){
+    player1.mesh.position.x = portalA1.x;
+    player1.mesh.position.z = portalA1.z;
+    player1.mesh.position.y = portalA1.y;
+    teleportSickness = true;
   }
 }
 
@@ -440,6 +470,7 @@ function animate() {
   lightning();
   cameraRot();
 
+  teleportA();
   //buttonLogic();
   expandZ();
   expandX();
