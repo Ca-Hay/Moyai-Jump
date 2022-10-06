@@ -92,12 +92,12 @@ class player {
 
 const player1 = new player(0, 2, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 6, 1, 6, 0x808080);
-const moyaiface1= new floor(0, 3, 0, 2, 1, 2, 0xEBEBEBE);
+const moyaiface1= new floor(0, 3, 0, 2, 0.8, 2, 0xEBEBEBE);
 const moyaiface2 = new floor(-3, 7, -3, 2.5, 1, 2.5, 0xEBEBEBE);
 const moyaiface3= new floor(3, 7, 3, 2.5, 1, 2.5, 0xEBEBEBE);
 const moyaiface4 = new floor(0, -3, 0, 3, 1, 3, 0x808080);
-const moyaieye1 = new floor(2.5, 6, 2.5, 1, 1, 1, 0xEBEBEBE);
-const moyaieye2 = new floor(-2.5, 6, -2.5, 1, 1, 1, 0xEBEBEBE);
+let moyaieye1 = new floor(2.5, 6, 2.5, 1, 1, 1, 0xEBEBEBE);
+let moyaieye2 = new floor(-2.5, 6, -2.5, 1, 1, 1, 0xEBEBEBE);
 const moyainose1 = new floor(0, 3.25, 0, 1, 1, 1, 0xEBEBEBE);
 //0xb9ffff
 const invis1 = new floor(8, -1, -8, 2, 1, 2, 0xb9ffff);
@@ -324,11 +324,15 @@ function lightning(){
   //console.log(lightningCount)
   if(lightningCount > 150){
     renderer.setClearColor(0xffffff)
+    moyaieye1.mesh.scale.set(1, 1, 1);
+    moyaieye2.mesh.scale.set(1, 1, 1);
     if(lightningCount > 225){
       lightningCount = 0;
     }
   }else {
     renderer.setClearColor(0xb9ffff)
+    moyaieye1.mesh.scale.set(1, 0.25, 1);
+    moyaieye2.mesh.scale.set(1, 0.25, 1);
   }
 }
 
