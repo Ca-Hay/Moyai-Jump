@@ -467,7 +467,7 @@ function movementOverall(){
 function animate() {
   renderer.render(scene, orthCamera);
   player1.meshBB.setFromObject(player1.mesh);
-  lightning();
+  //lightning();
   cameraRot();
 
   teleportA();

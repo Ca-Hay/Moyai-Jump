@@ -93,9 +93,12 @@ class player {
 const player1 = new player(0, 2, 0, 1, 1, 1);
 const floor1 = new floor(0, -2, 0, 6, 1, 6, 0x808080);
 const moyaiface1= new floor(0, 3, 0, 2, 1, 2, 0xEBEBEBE);
-const moyaiface2 = new floor(-3, 7, -3, 2, 1, 2, 0xEBEBEBE);
-const moyaiface3= new floor(3, 7, 3, 2, 1, 2, 0xEBEBEBE);
+const moyaiface2 = new floor(-3, 7, -3, 2.5, 1, 2.5, 0xEBEBEBE);
+const moyaiface3= new floor(3, 7, 3, 2.5, 1, 2.5, 0xEBEBEBE);
 const moyaiface4 = new floor(0, -3, 0, 3, 1, 3, 0x808080);
+const moyaieye1 = new floor(2.5, 6, 2.5, 1, 1, 1, 0xEBEBEBE);
+const moyaieye2 = new floor(-2.5, 6, -2.5, 1, 1, 1, 0xEBEBEBE);
+const moyainose1 = new floor(0, 3.25, 0, 1, 1, 1, 0xEBEBEBE);
 //0xb9ffff
 const invis1 = new floor(8, -1, -8, 2, 1, 2, 0xb9ffff);
 const invis2 = new floor(-8, 2, -13, 2, 1, 2, 0xb9ffff);
